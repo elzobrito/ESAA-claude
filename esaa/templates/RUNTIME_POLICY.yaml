@@ -1,0 +1,36 @@
+# ESAA Runtime Policy v0.4.0
+# Governs runtime behavior, TTLs, retries, and failure modes.
+
+schema_version: "0.4.0"
+
+agent_ttl: PT30M
+max_attempts_per_task: 3
+cooldown_between_attempts: PT2M
+
+on_validation_failure:
+  action: output.rejected
+  increment_attempt_count: true
+  auto_escalate_at_attempts: 3
+  escalation_severity: high
+
+on_ttl_exceeded:
+  error_code: ATTEMPT_TIMEOUT
+  action: output.rejected
+
+on_seq_conflict:         halt
+on_event_store_corruption: halt
+on_projection_mismatch:  reproject_or_halt
+on_projection_corrupted: halt_and_snapshot
+
+snapshots:
+  max_snapshots: 20
+  cleanup_strategy: oldest_first
+
+strict_mode:
+  non_zero_exit_on_verify_fail: true
+
+serialization:
+  encoding: utf-8
+  sort_keys: true
+  separators: [",", ":"]
+  final_newline: true

@@ -1,0 +1,84 @@
+# ESAA Orchestrator Contract v0.4.0
+# Defines the orchestrator's authority, invariants, and pipeline.
+
+schema_version: "0.4.0"
+
+identity:
+  role: runtime_deterministic
+  is_single_writer: true
+
+authority:
+  can_emit:
+    - run.start
+    - run.end
+    - task.create
+    - hotfix.create
+    - issue.resolve
+    - output.rejected
+    - orchestrator.file.write
+    - orchestrator.view.mutate
+    - verify.start
+    - verify.ok
+    - verify.fail
+  cannot_emit_as_orchestrator:
+    - claim
+    - complete
+    - review
+    - issue.report
+
+invariants:
+  INV-001: "done is terminal — never regress task.status=done"
+  INV-002: "no effect is persisted before complete output validation (fail-closed)"
+  INV-003: "enforce boundaries.write by task_kind with prefix_match"
+  INV-004: "event_seq must be strictly monotonic and gap-free"
+  INV-005: "is_single_writer=true — one orchestrator writes to event store at a time"
+  INV-006: "roadmap.json must be verifiable by deterministic SHA-256 replay"
+
+reject_conditions:
+  - unknown_action
+  - schema_violation
+  - boundary_violation
+  - immutable_done_violation
+  - lock_violation
+  - invalid_transition
+  - verification_gate
+
+event_envelope:
+  required_fields:
+    - schema_version
+    - event_id
+    - event_seq
+    - ts
+    - actor
+    - action
+    - payload
+  event_id_format: "EV-XXXXXXXX"
+  event_seq:
+    monotonic: true
+    gap_free: true
+    starts_at: 1
+
+state_machine:
+  transitions:
+    - {from: todo,        action: claim,           to: in_progress}
+    - {from: in_progress, action: complete,         to: review}
+    - {from: review,      action: approve,          to: done}
+    - {from: review,      action: request_changes,  to: in_progress}
+  terminal_states:
+    - done
+
+pipeline:
+  steps:
+    - parse_event_store
+    - select_next_eligible_task
+    - dispatch_agent
+    - validate_agent_output
+    - append_events
+    - project_views
+    - verify_projection
+
+issue_escalation:
+  low:      log_only
+  medium:   log_and_flag
+  high:     block_task
+  critical: halt_pipeline

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://esaa.local/schemas/lessons.schema.json",
+  "title": "ESAA Lessons Projection",
+  "type": "object",
+  "required": ["schema_version", "lessons"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "0.4.0"},
+    "lessons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["lesson_id", "status", "title"],
+        "properties": {
+          "lesson_id": {"type": "string", "minLength": 1},
+          "status": {"type": "string", "enum": ["active", "superseded", "archived"]},
+          "title": {"type": "string"},
+          "description": {"type": "string"},
+          "task_kinds": {
+            "type": "array",
+            "items": {"type": "string", "enum": ["spec", "impl", "qa"]}
+          },
+          "enforcement": {
+            "type": "object",
+            "properties": {
+              "mode": {"type": "string", "enum": ["reject", "warn", "info"]},
+              "applies_to": {"type": "string"}
+            }
+          },
+          "created_at": {"type": "string"}
+        }
+      }
+    }
+  }
+}

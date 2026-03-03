@@ -1,0 +1,33 @@
+# ESAA Storage Policy v0.4.0
+# Defines file locations and storage rules.
+
+schema_version: "0.4.0"
+
+root_directory: ".roadmap"
+
+files:
+  event_store:            "activity.jsonl"
+  roadmap_projection:     "roadmap.json"
+  issues_projection:      "issues.json"
+  lessons_projection:     "lessons.json"
+  agent_contract:         "AGENT_CONTRACT.yaml"
+  orchestrator_contract:  "ORCHESTRATOR_CONTRACT.yaml"
+  runtime_policy:         "RUNTIME_POLICY.yaml"
+  storage_policy:         "STORAGE_POLICY.yaml"
+  projection_spec:        "PROJECTION_SPEC.md"
+  agent_result_schema:    "agent_result.schema.json"
+  roadmap_schema:         "roadmap.schema.json"
+  issues_schema:          "issues.schema.json"
+  lessons_schema:         "lessons.schema.json"
+  agents_swarm:           "agents_swarm.yaml"
+
+directories:
+  snapshots: "snapshots/"
+
+append_only:
+  - "activity.jsonl"
+
+generated_read_models:
+  - "roadmap.json"
+  - "issues.json"
+  - "lessons.json"

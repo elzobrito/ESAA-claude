@@ -1,0 +1,9 @@
+{
+  "name": "@elzobrito/esaa-claude",
+  "version": "0.4.0",
+  "description": "ESAA — Event Sourcing for Autonomous Agents. Claude Code plugin.",
+  "author": "Elzo Brito dos Santos Filho",
+  "license": "MIT",
+  "keywords": ["claude-code", "claude-plugin", "esaa", "event-sourcing", "agents"],
+  "files": [".claude-plugin/", "plugin.json", "skills/", "hooks/", "commands/", "mcp/"]
+}

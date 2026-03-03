@@ -1,0 +1,36 @@
+{
+  "PreToolUse": [
+    {
+      "matcher": "write_file",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "bash hooks/scripts/boundary-check.sh \"$TOOL_INPUT_file_path\"",
+          "description": "Intercepta a escrita para garantir que o path obedece aos boundaries de leitura/escrita do task_kind ou scope_patch atual da tarefa in_progress."
+        }
+      ]
+    },
+    {
+      "matcher": "edit_file",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "bash hooks/scripts/boundary-check.sh \"$TOOL_INPUT_target_path\""
+        }
+      ]
+    }
+  ],
+  "PostToolUse": [
+    {
+      "matcher": "write_file",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "bash hooks/scripts/verify-projection.sh",
+          "timeout": 15000,
+          "description": "Executa a auditoria de integridade do ESAA após cada escrita para garantir que o state não foi corrompido."
+        }
+      ]
+    }
+  ]
+}

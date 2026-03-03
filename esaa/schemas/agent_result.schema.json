@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://esaa.local/schemas/agent_result.schema.json",
+  "title": "ESAA Agent Result",
+  "description": "Envelope for all agent outputs. Root keys: activity_event (required) and file_updates (optional). additionalProperties=false at root.",
+  "type": "object",
+  "required": ["activity_event"],
+  "additionalProperties": false,
+  "properties": {
+    "activity_event": {
+      "type": "object",
+      "required": ["action", "task_id"],
+      "additionalProperties": true,
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": ["claim", "complete", "review", "issue.report"]
+        },
+        "task_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string"
+        },
+        "decision": {
+          "type": "string",
+          "enum": ["approve", "request_changes"]
+        },
+        "tasks": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        },
+        "verification": {
+          "type": "object",
+          "required": ["checks"],
+          "properties": {
+            "checks": {
+              "type": "array",
+              "items": {"type": "string"},
+              "minItems": 1
+            }
+          }
+        },
+        "issue_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"]
+        },
+        "title": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "object",
+          "required": ["symptom", "repro_steps"],
+          "properties": {
+            "symptom": {"type": "string"},
+            "repro_steps": {
+              "type": "array",
+              "items": {"type": "string"}
+            }
+          }
+        },
+        "fixes": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"action": {"const": "review"}}
+          },
+          "then": {
+            "required": ["action", "task_id", "decision", "tasks"]
+          }
+        },
+        {
+          "if": {
+            "properties": {"action": {"const": "issue.report"}}
+          },
+          "then": {
+            "required": ["action", "task_id", "issue_id", "severity", "title", "evidence"]
+          }
+        }
+      ]
+    },
+    "file_updates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "content"],
+        "additionalProperties": false,
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "content": {"type": "string"}
+        }
+      }
+    }
+  }
+}

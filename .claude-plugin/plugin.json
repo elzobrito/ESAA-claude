@@ -1,0 +1,15 @@
+{
+  "name": "esaa-claude",
+  "version": "0.4.0",
+  "description": "ESAA — Event Sourcing for Autonomous Agents. Governance layer for LLM agent orchestration: PARCER profiles, boundary enforcement, deterministic pipeline, and projection verification.",
+  "author": {
+    "name": "Elzo Brito dos Santos Filho"
+  },
+  "homepage": "https://github.com/elzobrito/ESAA---Event-Sourcing-Agent-Architecture",
+  "repository": "https://github.com/elzobrito/ESAA---Event-Sourcing-Agent-Architecture",
+  "license": "MIT",
+  "keywords": ["esaa", "event-sourcing", "agents", "orchestration", "governance", "parcer"],
+  "skills": "./skills",
+  "hooks": "./hooks/hooks.json",
+  "mcpServers": "./mcp/.mcp.json"
+}

@@ -1,0 +1,32 @@
+# ESAA Agent Swarm Configuration v0.4.0
+# Maps task_kind to agent profiles and Claude Code skill references.
+
+schema_version: "0.4.0"
+
+resolution:
+  by_task_kind:
+    spec:
+      agent:       agent-spec
+      skill_ref:   esaa-spec
+      template:    spec.core
+      description: "Analista de Requisitos. Produz docs/spec/{task_id}.md."
+
+    impl:
+      agent:       agent-impl
+      skill_ref:   esaa-impl
+      template:    impl.core
+      description: "Engenheiro de Implementacao. Produz src/** e tests/**."
+
+    qa:
+      agent:       agent-qa
+      skill_ref:   esaa-qa
+      template:    qa.core
+      description: "Engenheiro de Qualidade. Emite review com decision approve/request_changes."
+
+  overrides:
+    when_task_flag_is_hotfix:
+      impl:
+        agent:       agent-impl
+        skill_ref:   esaa-impl-hotfix
+        template:    impl.hotfix
+        description: "Engenheiro de Implementacao em modo Hotfix. Escopo restrito a scope_patch."

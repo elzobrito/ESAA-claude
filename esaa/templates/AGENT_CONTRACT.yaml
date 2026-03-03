@@ -1,0 +1,78 @@
+# ESAA Agent Contract v0.4.0
+# Defines boundaries, allowed actions, and output contract for all agent profiles.
+
+schema_version: "0.4.0"
+
+output_contract:
+  root_keys:
+    required: ["activity_event"]
+    optional: ["file_updates"]
+  additional_properties: false
+  prohibited_fields_in_activity_event:
+    - schema_version
+    - event_id
+    - event_seq
+    - ts
+    - actor
+    - payload
+    - assigned_to
+    - started_at
+    - completed_at
+
+allowed_agent_actions:
+  - claim
+  - complete
+  - review
+  - issue.report
+
+boundaries:
+  enforcement: fail_closed
+  prefix_match: true
+  by_task_kind:
+    spec:
+      read:
+        - ".roadmap/**"
+        - "docs/**"
+      write:
+        - "docs/**"
+      forbidden:
+        - "src/**"
+        - "tests/**"
+        - ".roadmap/**"
+    impl:
+      read:
+        - ".roadmap/**"
+        - "docs/**"
+        - "src/**"
+        - "tests/**"
+      write:
+        - "src/**"
+        - "tests/**"
+      forbidden:
+        - ".roadmap/**"
+        - "docs/spec/**"
+    qa:
+      read:
+        - ".roadmap/**"
+        - "docs/**"
+        - "src/**"
+        - "tests/**"
+      write:
+        - "docs/qa/**"
+        - "tests/**"
+      forbidden:
+        - "src/**"
+        - ".roadmap/**"
+
+hotfix:
+  boundary_mode: scope_patch_prefix_match
+  minimum_verification_checks: 2
+  required_fields_in_activity_event:
+    - issue_id
+    - fixes
+
+verification_gate:
+  impl:
+    minimum_checks: 1
+  hotfix:
+    minimum_checks: 2

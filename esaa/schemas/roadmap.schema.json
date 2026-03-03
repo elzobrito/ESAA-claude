@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://esaa.local/schemas/roadmap.schema.json",
+  "title": "ESAA Roadmap Projection",
+  "type": "object",
+  "required": ["schema_version", "meta", "project", "tasks", "indexes"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "0.4.0"},
+    "meta": {
+      "type": "object",
+      "required": ["schema_version", "esaa_version", "immutable_done", "run"],
+      "properties": {
+        "schema_version": {"type": "string"},
+        "esaa_version": {"type": "string"},
+        "immutable_done": {"type": "boolean"},
+        "master_correlation_id": {"type": "string"},
+        "run": {
+          "type": "object",
+          "required": ["run_id", "status", "last_event_seq", "projection_hash_sha256", "verify_status"],
+          "properties": {
+            "run_id": {"type": "string"},
+            "status": {"type": "string"},
+            "last_event_seq": {"type": "integer", "minimum": 0},
+            "projection_hash_sha256": {"type": "string"},
+            "verify_status": {"type": "string", "enum": ["ok", "mismatch", "corrupted", "unknown"]}
+          }
+        },
+        "updated_at": {"type": "string"}
+      }
+    },
+    "project": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {"type": "string"},
+        "audit_scope": {"type": "string"}
+      }
+    },
+    "tasks": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/task"}
+    },
+    "indexes": {
+      "type": "object",
+      "required": ["by_status", "by_kind"],
+      "properties": {
+        "by_status": {
+          "type": "object",
+          "properties": {
+            "todo": {"type": "integer"},
+            "in_progress": {"type": "integer"},
+            "review": {"type": "integer"},
+            "done": {"type": "integer"}
+          }
+        },
+        "by_kind": {
+          "type": "object",
+          "properties": {
+            "spec": {"type": "integer"},
+            "impl": {"type": "integer"},
+            "qa": {"type": "integer"}
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "task": {
+      "type": "object",
+      "required": ["task_id", "task_kind", "title", "status", "depends_on"],
+      "properties": {
+        "task_id": {"type": "string"},
+        "task_kind": {"type": "string", "enum": ["spec", "impl", "qa"]},
+        "title": {"type": "string"},
+        "description": {"type": "string"},
+        "status": {"type": "string", "enum": ["todo", "in_progress", "review", "done"]},
+        "depends_on": {"type": "array", "items": {"type": "string"}},
+        "targets": {"type": "array", "items": {"type": "string"}},
+        "outputs": {
+          "type": "object",
+          "properties": {
+            "files": {"type": "array", "items": {"type": "string"}}
+          }
+        },
+        "immutability": {
+          "type": "object",
+          "properties": {
+            "done_is_immutable": {"type": "boolean"}
+          }
+        },
+        "attempt_count": {"type": "integer", "minimum": 0},
+        "notes": {"type": "string"},
+        "verification": {"type": "object"},
+        "is_hotfix": {"type": "boolean"},
+        "issue_id": {"type": "string"},
+        "fixes": {"type": "string"},
+        "scope_patch": {"type": "array", "items": {"type": "string"}},
+        "required_verification": {"type": "array", "items": {"type": "string"}}
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"status": {"enum": ["in_progress", "review", "done"]}}
+          },
+          "then": {
+            "properties": {
+              "assigned_to": {"type": "string"},
+              "started_at": {"type": "string"}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {"status": {"const": "done"}}
+          },
+          "then": {
+            "properties": {
+              "completed_at": {"type": "string"}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

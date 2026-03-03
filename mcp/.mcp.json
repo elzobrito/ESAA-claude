@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "esaa-orchestrator-server": {
+      "command": "python3",
+      "args": [
+        "-m",
+        "esaa.mcp_server"
+      ],
+      "env": {
+        "PYTHONUTF8": "1",
+        "ESAA_STRICT_MODE": "true"
+      }
+    }
+  }
+}

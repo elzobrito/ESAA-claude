@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "esaa"
+version = "0.4.0"
+description = "ESAA — Event Sourcing for Autonomous Agents runtime"
+authors = [{ name = "Elzo Brito dos Santos Filho", email = "elzo.santos@cps.sp.gov.br" }]
+license = { text = "MIT" }
+requires-python = ">=3.12"
+dependencies = [
+    "jsonschema>=4.20.0",
+    "pyyaml>=6.0",
+    "mcp[cli]>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[tool.setuptools.packages.find]
+include = ["esaa*"]
+
+[tool.setuptools.package-data]
+"esaa.schemas" = ["*.json"]
+"esaa.templates" = ["*.yaml", "*.md", "*.json"]
