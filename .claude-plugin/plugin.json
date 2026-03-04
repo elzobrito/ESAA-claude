@@ -9,6 +9,7 @@
   "repository": "https://github.com/elzobrito/ESAA---Event-Sourcing-Agent-Architecture",
   "license": "MIT",
   "keywords": ["esaa", "event-sourcing", "agents", "orchestration", "governance", "parcer"],
+  "commands": "./commands",
   "skills": "./skills",
   "hooks": "./hooks/hooks.json",
   "mcpServers": "./mcp/.mcp.json"
