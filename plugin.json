@@ -4,6 +4,7 @@
   "description": "ESAA — Event Sourcing for Autonomous Agents. Governance layer for LLM agent orchestration: PARCER profiles, boundary enforcement, deterministic pipeline, and projection verification.",
   "author": "Elzo Brito dos Santos Filho",
   "license": "MIT",
+  "commands": "./commands",
   "skills": "./skills",
   "hooks": "./hooks/hooks.json",
   "mcpServers": "./mcp/.mcp.json"
