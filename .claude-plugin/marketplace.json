@@ -5,14 +5,14 @@
   },
   "metadata": {
     "description": "ESAA — Event Sourcing for Autonomous Agents plugin marketplace",
-    "version": "0.4.0"
+    "version": "0.4.1"
   },
   "plugins": [
     {
       "name": "esaa-claude",
       "source": "./",
       "description": "ESAA — Event Sourcing for Autonomous Agents. Governance layer for LLM agent orchestration: PARCER profiles, boundary enforcement, deterministic pipeline, and projection verification.",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "author": {
         "name": "Elzo Brito dos Santos Filho"
       },
