@@ -43,7 +43,11 @@
       "Bash(claude plugin install \"esaa-claude@esaa-claude\")",
       "Bash(python3 -c \"import json; d=json.load\\(open\\(''/root/.claude/settings.json''\\)\\); print\\(json.dumps\\(d, indent=2\\)\\)\")",
       "Bash(claude plugin marketplace update esaa-claude)",
-      "Bash(claude plugin install \"esaa-claude@esaa-claude\" --scope user)"
+      "Bash(claude plugin install \"esaa-claude@esaa-claude\" --scope user)",
+      "Bash(git -C \"C:\\\\xampp\\\\htdocs\\\\ESAA-claude\" remote -v)",
+      "Bash(git -C \"C:\\\\xampp\\\\htdocs\\\\ESAA-claude\" status)",
+      "Bash(git -C \"C:\\\\xampp\\\\htdocs\\\\ESAA-claude\" log --oneline -5)",
+      "mcp__plugin_esaa-claude_esaa-orchestrator-server__esaa_get_state"
     ]
   }
 }
